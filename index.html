@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuit Breaker - Presentación Interactiva</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-counter" id="slideCounter">1 / 27</div>
+    
+    <nav class="nav-arrows">
+        <button class="nav-btn" id="prevBtn" onclick="prevSlide()">&#10094;</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextSlide()">&#10095;</button>
+    </nav>
+
+    <div class="presentation" id="presentation">
+        
+        <!-- Slide 1: Portada -->
+        <section class="slide active" id="slide-1">
+            <div class="slide-content center-content">
+                <div class="circuit-animation">
+                    <div class="circuit-path">
+                        <div class="electron"></div>
+                        <div class="electron delay-1"></div>
+                        <div class="electron delay-2"></div>
+                    </div>
+                    <div class="breaker-switch">
+                        <div class="switch-handle"></div>
+                    </div>
+                </div>
+                <h1 class="title-main">CIRCUIT BREAKER</h1>
+                <p class="subtitle">Patrón de Resiliencia en Arquitecturas de Microservicios</p>
+                <p class="author">Angel Duran & Daniel Felipe Melo</p>
+                <div class="pulse-indicator"><span>Presiona → para comenzar</span></div>
+            </div>
+        </section>
+
+        <!-- Slide 2: Agenda parte 1 -->
+        <section class="slide" id="slide-2">
+            <div class="slide-content">
+                <h2 class="slide-title">Agenda - Conceptos</h2>
+                <div class="agenda-grid">
+                    <div class="agenda-card" data-num="01"><h3>Resiliencia</h3><p>Definición y concepto</p></div>
+                    <div class="agenda-card" data-num="02"><h3>Resiliencia en Software</h3><p>Aplicación al desarrollo</p></div>
+                    <div class="agenda-card" data-num="03"><h3>Historia</h3><p>Evolución de la resiliencia</p></div>
+                    <div class="agenda-card" data-num="04"><h3>Características Clave</h3><p>Principios fundamentales</p></div>
+                    <div class="agenda-card" data-num="05"><h3>Pruebas de Resiliencia</h3><p>Chaos Engineering</p></div>
+                    <div class="agenda-card" data-num="06"><h3>Entornos Distribuidos</h3><p>Microservicios y fallos</p></div>
+                    <div class="agenda-card" data-num="07"><h3>Impacto y Valor</h3><p>ROI de la resiliencia</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Agenda parte 2 -->
+        <section class="slide" id="slide-3">
+            <div class="slide-content">
+                <h2 class="slide-title">Agenda - Circuit Breaker</h2>
+                <div class="agenda-grid">
+                    <div class="agenda-card" data-num="08"><h3>Analogía de Falla en Cascada</h3><p>y Circuit Breaker</p></div>
+                    <div class="agenda-card" data-num="09"><h3>¿Cómo funciona?</h3><p>Estados y transiciones</p></div>
+                    <div class="agenda-card" data-num="10"><h3>Enfoques</h3><p>Count-based vs Time-based</p></div>
+                    <div class="agenda-card" data-num="11"><h3>Ventajas</h3><p>Beneficios del patrón</p></div>
+                    <div class="agenda-card" data-num="12"><h3>Limitaciones</h3><p>Consideraciones</p></div>
+                    <div class="agenda-card" data-num="13"><h3>Implementaciones</h3><p>Librerías populares</p></div>
+                    <div class="agenda-card" data-num="14"><h3>Ejemplos Prácticos</h3><p>Python y Java</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Resiliencia -->
+        <section class="slide" id="slide-4">
+            <div class="slide-content center-content">
+                <div class="section-header">
+                    <span class="section-icon">🛡️</span>
+                    <h1 class="section-title">RESILIENCIA</h1>
+                    <p class="section-subtitle">Recuperarse rápidamente de fallos y continuar operando</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Resiliencia en software -->
+        <section class="slide" id="slide-5">
+            <div class="slide-content">
+                <h2 class="slide-title">Resiliencia en Software</h2>
+                <div class="two-columns">
+                    <div class="col">
+                        <div class="definition-box">
+                            <p class="big-quote">"Capacidad de un sistema de software para <strong>anticipar, resistir, recuperarse y adaptarse</strong> a condiciones adversas, ataques o fallos"</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>En la práctica significa:</h4>
+                            <ul class="simple-list">
+                                <li>El sistema sigue funcionando ante fallos parciales</li>
+                                <li>Se degrada elegantemente en vez de caer completamente</li>
+                                <li>Se recupera automáticamente cuando la condición adversa desaparece</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="visual-box">
+                            <div class="resilience-visual">
+                                <div class="rv-item normal">✅ Estado Normal</div>
+                                <div class="rv-arrow">↓ Fallo ocurre</div>
+                                <div class="rv-item degraded">⚠️ Degradado</div>
+                                <div class="rv-arrow">↓ Auto-recuperación</div>
+                                <div class="rv-item normal">✅ Recuperado</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Historia -->
+        <section class="slide" id="slide-6">
+            <div class="slide-content">
+                <h2 class="slide-title">Historia de la Resiliencia</h2>
+                <div class="timeline-horizontal">
+                    <div class="timeline-entry">
+                        <span class="year">2004</span>
+                        <p>Netflix inicia migración a la nube</p>
+                    </div>
+                    <div class="timeline-entry">
+                        <span class="year">2010</span>
+                        <p>Conceptos de Chaos Engineering comienzan a formarse</p>
+                    </div>
+                    <div class="timeline-entry">
+                        <span class="year">2011</span>
+                        <p>Netflix crea <strong>Hystrix</strong> como primera librería de circuit breaker</p>
+                    </div>
+                    <div class="timeline-entry">
+                        <span class="year">2012</span>
+                        <p>Netflix lanza <strong>Chaos Monkey</strong> (Simian Army)</p>
+                    </div>
+                    <div class="timeline-entry">
+                        <span class="year">2017</span>
+                        <p><strong>Resilience4j</strong> surge como sucesor moderno de Hystrix</p>
+                    </div>
+                    <div class="timeline-entry">
+                        <span class="year">2018</span>
+                        <p>Hystrix entra en modo mantenimiento</p>
+                    </div>
+                    <div class="timeline-entry">
+                        <span class="year">Hoy</span>
+                        <p>Resiliencia como pilar de la arquitectura cloud-native</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Características clave -->
+        <section class="slide" id="slide-7">
+            <div class="slide-content">
+                <h2 class="slide-title">Características Clave de la Resiliencia</h2>
+                <div class="features-grid">
+                    <div class="feature-card"><span class="feat-icon">🔄</span><h3>Recuperación Automática</h3><p>El sistema se restaura sin intervención humana</p></div>
+                    <div class="feature-card"><span class="feat-icon">🛡️</span><h3>Aislamiento de Fallos</h3><p>Un componente fallido no afecta a los demás</p></div>
+                    <div class="feature-card"><span class="feat-icon">📉</span><h3>Degradación Elegante</h3><p>Funcionalidad reducida en vez de caída total</p></div>
+                    <div class="feature-card"><span class="feat-icon">📊</span><h3>Observabilidad</h3><p>Monitoreo y métricas en tiempo real</p></div>
+                    <div class="feature-card"><span class="feat-icon">⚡</span><h3>Fail-Fast</h3><p>Detectar y reportar errores rápidamente</p></div>
+                    <div class="feature-card"><span class="feat-icon">🔁</span><h3>Redundancia</h3><p>Componentes respaldo listos para tomar el control</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Pruebas de Resiliencia -->
+        <section class="slide" id="slide-8">
+            <div class="slide-content">
+                <h2 class="slide-title">Pruebas de Resiliencia</h2>
+                <div class="two-columns">
+                    <div class="col">
+                        <div class="definition-box">
+                            <h3>🐒 Chaos Engineering</h3>
+                            <p>Disciplina de experimentar en un sistema para construir confianza en su capacidad de soportar condiciones turbulentas en producción.</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Herramientas populares:</h4>
+                            <ul class="simple-list">
+                                <li>Chaos Monkey (Netflix)</li>
+                                <li>Gremlin</li>
+                                <li>LitmusChaos (Kubernetes)</li>
+                                <li>AWS Fault Injection Simulator</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h3>Tipos de pruebas:</h3>
+                        <ul class="feature-list">
+                            <li><span class="icon">💀</span> Inyección de fallos de red</li>
+                            <li><span class="icon">🐌</span> Introducción de latencia</li>
+                            <li><span class="icon">💾</span> Saturación de recursos</li>
+                            <li><span class="icon">🔌</span> Caída de instancias</li>
+                            <li><span class="icon">🌍</span> Pérdida de zona de disponibilidad</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Slide 9: Aplicación en entornos distribuidos -->
+        <section class="slide" id="slide-9">
+            <div class="slide-content">
+                <h2 class="slide-title">Aplicación en Entornos Distribuidos</h2>
+                <div class="two-columns">
+                    <div class="col">
+                        <h3>Complejidad de los sistemas distribuidos</h3>
+                        <div class="info-card">
+                            <ul class="simple-list">
+                                <li>Múltiples servicios comunicándose por red</li>
+                                <li>Cada llamada remota puede fallar</li>
+                                <li>Latencia variable e impredecible</li>
+                                <li>Fallos parciales son la norma, no la excepción</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h3>Fallos comunes en microservicios</h3>
+                        <ul class="feature-list">
+                            <li><span class="icon">🌐</span> Timeouts de red</li>
+                            <li><span class="icon">💾</span> Servicios sobrecargados</li>
+                            <li><span class="icon">🔗</span> Dependencias en cascada</li>
+                            <li><span class="icon">📊</span> Agotamiento de thread pools</li>
+                        </ul>
+                        <div class="info-card" style="margin-top: 15px;">
+                            <h4>Mecanismos de resiliencia:</h4>
+                            <p>Circuit Breaker, Retry, Timeout, Bulkhead, Rate Limiter, Fallback</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Impacto de la Resiliencia -->
+        <section class="slide" id="slide-10">
+            <div class="slide-content">
+                <h2 class="slide-title">Impacto de la Resiliencia</h2>
+                <div class="impact-grid">
+                    <div class="impact-card">
+                        <div class="impact-number">99.99%</div>
+                        <p>Disponibilidad objetivo en sistemas críticos</p>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-number">~52min</div>
+                        <p>Downtime máximo permitido al año (99.99%)</p>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-number">$300K+</div>
+                        <p>Costo promedio por hora de inactividad</p>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-number">80%</div>
+                        <p>De caídas causadas por cambios y fallos en cascada</p>
+                    </div>
+                </div>
+                <div class="info-card" style="margin-top:30px; text-align:center;">
+                    <p>La resiliencia no es un lujo — es una <strong>necesidad de negocio</strong> en sistemas de alta disponibilidad.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Valor de la resiliencia -->
+        <section class="slide" id="slide-11">
+            <div class="slide-content">
+                <h2 class="slide-title">Valor de la Resiliencia</h2>
+                <div class="value-grid">
+                    <div class="value-card">
+                        <span class="value-icon">💰</span>
+                        <h3>Reducción de Costos</h3>
+                        <p>Menor impacto financiero de incidentes. Menos tiempo en war rooms.</p>
+                    </div>
+                    <div class="value-card">
+                        <span class="value-icon">😊</span>
+                        <h3>Experiencia del Usuario</h3>
+                        <p>Continuidad del servicio. Degradación graceful vs error 500.</p>
+                    </div>
+                    <div class="value-card">
+                        <span class="value-icon">🏢</span>
+                        <h3>Reputación</h3>
+                        <p>Confianza del cliente. SLAs cumplidos consistentemente.</p>
+                    </div>
+                    <div class="value-card">
+                        <span class="value-icon">🚀</span>
+                        <h3>Velocidad de Desarrollo</h3>
+                        <p>Despliegues con confianza. Rollbacks automáticos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Resiliencia vs Robustez -->
+        <section class="slide" id="slide-12">
+            <div class="slide-content">
+                <h2 class="slide-title">Resiliencia vs Robustez</h2>
+                <div class="comparison-table">
+                    <div class="compare-col resilience">
+                        <h3>🔄 Resiliencia</h3>
+                        <ul>
+                            <li>Se recupera de fallos</li>
+                            <li>Acepta que los errores ocurrirán</li>
+                            <li>Diseño para el fallo</li>
+                            <li>Adaptativa y dinámica</li>
+                            <li>Respuesta graceful ante caídas</li>
+                        </ul>
+                    </div>
+                    <div class="compare-vs">VS</div>
+                    <div class="compare-col robustness">
+                        <h3>🏗️ Robustez</h3>
+                        <ul>
+                            <li>Resiste sin cambiar</li>
+                            <li>Intenta prevenir todos los errores</li>
+                            <li>Diseño defensivo</li>
+                            <li>Estática y rígida</li>
+                            <li>Fallo total si se supera el umbral</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 13: Consecuencias -->
+        <section class="slide" id="slide-13">
+            <div class="slide-content">
+                <h2 class="slide-title">Consecuencias de un Software no Resiliente</h2>
+                <div class="consequences-grid">
+                    <div class="consequence-card">
+                        <span class="cons-icon">💥</span>
+                        <h3>Fallas en Cascada</h3>
+                        <p>Un servicio caído derriba todo el sistema</p>
+                    </div>
+                    <div class="consequence-card">
+                        <span class="cons-icon">⏳</span>
+                        <h3>Tiempos de Respuesta Degradados</h3>
+                        <p>Usuarios esperando indefinidamente</p>
+                    </div>
+                    <div class="consequence-card">
+                        <span class="cons-icon">💸</span>
+                        <h3>Pérdidas Económicas</h3>
+                        <p>Transacciones perdidas, clientes insatisfechos</p>
+                    </div>
+                    <div class="consequence-card">
+                        <span class="cons-icon">🔥</span>
+                        <h3>Agotamiento de Recursos</h3>
+                        <p>Threads, conexiones y memoria consumidos</p>
+                    </div>
+                    <div class="consequence-card">
+                        <span class="cons-icon">📉</span>
+                        <h3>Pérdida de Confianza</h3>
+                        <p>Reputación dañada, SLAs incumplidos</p>
+                    </div>
+                    <div class="consequence-card">
+                        <span class="cons-icon">🔄</span>
+                        <h3>Recuperación Manual</h3>
+                        <p>Intervención humana necesaria a las 3am</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14: ¿Qué es Circuit Breaker? -->
+        <section class="slide" id="slide-14">
+            <div class="slide-content">
+                <h2 class="slide-title">¿Qué es Circuit Breaker?</h2>
+                <div class="two-columns">
+                    <div class="col">
+                        <div class="definition-box highlight">
+                            <p class="big-quote">Patrón de arquitectura de microservicios que <strong>previene que un cliente invoque de forma continua a un servicio que está fallando</strong> o que tiene un problema de performance.</p>
+                        </div>
+                        <div class="analogy-box">
+                            <h4>⚡ Analogía Eléctrica</h4>
+                            <p>Como un interruptor térmico en tu casa: cuando detecta una sobrecarga, <strong>corta el circuito</strong> para proteger toda la instalación.</p>
+                        </div>
+                    </div>
+                    <div class="col center-col">
+                        <div class="visual-box">
+                            <div class="cb-visual">
+                                <div class="cb-client">🖥️ Cliente</div>
+                                <div class="cb-breaker">⚡ Circuit Breaker</div>
+                                <div class="cb-service">🌐 Servicio</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15: ¿Por qué es importante? parte 1 -->
+        <section class="slide" id="slide-15">
+            <div class="slide-content">
+                <h2 class="slide-title">¿Por qué es importante?</h2>
+                <div class="importance-grid">
+                    <div class="importance-item-card">
+                        <span class="badge">1</span>
+                        <h3>Evita Fallas en Cascada</h3>
+                        <p>Un servicio lento no arrastra al resto del sistema. El circuit breaker corta la cadena de propagación.</p>
+                    </div>
+                    <div class="importance-item-card">
+                        <span class="badge">2</span>
+                        <h3>Libera Recursos</h3>
+                        <p>En vez de mantener threads bloqueados esperando respuesta, se rechazan inmediatamente.</p>
+                    </div>
+                    <div class="importance-item-card">
+                        <span class="badge">3</span>
+                        <h3>Permite Recuperación</h3>
+                        <p>El servicio fallido tiene tiempo para recuperarse sin recibir tráfico adicional.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: ¿Por qué es importante? parte 2 -->
+        <section class="slide" id="slide-16">
+            <div class="slide-content">
+                <h2 class="slide-title">¿Por qué es importante?</h2>
+                <div class="importance-grid">
+                    <div class="importance-item-card">
+                        <span class="badge">4</span>
+                        <h3>Mejora la Experiencia del Usuario</h3>
+                        <p>Respuestas rápidas (aunque sean fallback) son mejores que timeouts de 30 segundos.</p>
+                    </div>
+                    <div class="importance-item-card">
+                        <span class="badge">5</span>
+                        <h3>Observabilidad</h3>
+                        <p>Métricas claras sobre la salud de las dependencias. Alertas proactivas.</p>
+                    </div>
+                    <div class="importance-item-card">
+                        <span class="badge">6</span>
+                        <h3>Resiliencia del Ecosistema</h3>
+                        <p>Protege no solo tu servicio, sino todo el ecosistema de microservicios interconectados.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Analogía falla en cascada -->
+        <section class="slide" id="slide-17">
+            <div class="slide-content">
+                <h2 class="slide-title">Analogía: Falla en Cascada vs Circuit Breaker</h2>
+                <div class="cascade-demo">
+                    <div class="two-columns">
+                        <div class="col">
+                            <h3 class="red-title">❌ Sin Circuit Breaker</h3>
+                            <div class="service-chain vertical">
+                                <div class="service ok" id="svc-a1">API Gateway</div>
+                                <div class="arrow-down">↓</div>
+                                <div class="service ok" id="svc-b1">Servicio Pagos</div>
+                                <div class="arrow-down">↓</div>
+                                <div class="service ok" id="svc-c1">Servicio Banco</div>
+                                <div class="arrow-down">↓</div>
+                                <div class="service ok" id="svc-d1">DB Transacciones</div>
+                            </div>
+                            <button class="demo-btn" onclick="startCascadeDemo()">💥 Simular Fallo</button>
+                        </div>
+                        <div class="col">
+                            <h3 class="green-title">✅ Con Circuit Breaker</h3>
+                            <div class="service-chain vertical">
+                                <div class="service ok" id="svc-a2">API Gateway</div>
+                                <div class="arrow-down">↓</div>
+                                <div class="service ok" id="svc-b2">Servicio Pagos<br><small>⚡ CB</small></div>
+                                <div class="arrow-down">↓ 🚫</div>
+                                <div class="service failing" id="svc-c2">Servicio Banco ❌</div>
+                                <div class="arrow-down">↓</div>
+                                <div class="service failing" id="svc-d2">DB Transacciones ❌</div>
+                            </div>
+                            <div class="info-card"><p>El CB corta en Servicio Pagos → respuesta fallback inmediata</p></div>
+                        </div>
+                    </div>
+                    <button class="demo-btn secondary" onclick="resetCascadeDemo()" style="margin-top:15px">🔄 Reiniciar</button>
+                    <div class="cascade-info" id="cascadeInfo">
+                        <p>Haz clic en "Simular Fallo" para ver la diferencia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 18: ¿Cómo funciona? - Diagrama de estados -->
+        <section class="slide" id="slide-18">
+            <div class="slide-content">
+                <h2 class="slide-title">¿Cómo funciona un Circuit Breaker?</h2>
+                <div class="states-diagram">
+                    <div class="state-node closed" id="state-closed">
+                        <div class="state-icon">✅</div>
+                        <h3>CLOSED</h3>
+                        <p>Funcionamiento normal. Las solicitudes pasan al servicio.</p>
+                    </div>
+                    <div class="state-arrow right-arrow">
+                        <span>Umbral de errores superado</span>
+                    </div>
+                    <div class="state-node open" id="state-open">
+                        <div class="state-icon">🚫</div>
+                        <h3>OPEN</h3>
+                        <p>Circuito abierto. Solicitudes rechazadas inmediatamente.</p>
+                    </div>
+                    <div class="state-arrow down-arrow">
+                        <span>Timeout expira</span>
+                    </div>
+                    <div class="state-node half-open" id="state-half-open">
+                        <div class="state-icon">⚠️</div>
+                        <h3>HALF-OPEN</h3>
+                        <p>Permite solicitudes limitadas para probar recuperación.</p>
+                    </div>
+                </div>
+                <button class="demo-btn" onclick="animateStates()">▶️ Animar Transiciones</button>
+            </div>
+        </section>
+
+        <!-- Slide 19: ¿Cómo funciona? - Detalle -->
+        <section class="slide" id="slide-19">
+            <div class="slide-content">
+                <h2 class="slide-title">¿Cómo funciona un Circuit Breaker?</h2>
+                <div class="flow-detail">
+                    <div class="flow-step">
+                        <div class="flow-num">1</div>
+                        <div class="flow-content">
+                            <h4>CLOSED → Monitorea</h4>
+                            <p>Cuenta las solicitudes exitosas y fallidas. Mientras el ratio de error esté bajo el umbral, todo pasa normal.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-num">2</div>
+                        <div class="flow-content">
+                            <h4>CLOSED → OPEN</h4>
+                            <p>Cuando el porcentaje de fallos supera el umbral configurado, el circuito se <strong>abre</strong>. Todas las solicitudes son rechazadas de inmediato (fail-fast).</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-num">3</div>
+                        <div class="flow-content">
+                            <h4>OPEN → HALF-OPEN</h4>
+                            <p>Después de un timeout configurable, el circuito pasa a <strong>half-open</strong>. Permite un número limitado de solicitudes de prueba.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-num">4</div>
+                        <div class="flow-content">
+                            <h4>HALF-OPEN → CLOSED / OPEN</h4>
+                            <p>Si las pruebas son exitosas → vuelve a CLOSED. Si fallan → vuelve a OPEN y reinicia el timeout.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Enfoques de funcionamiento -->
+        <section class="slide" id="slide-20">
+            <div class="slide-content">
+                <h2 class="slide-title">Enfoques de Funcionamiento</h2>
+                <div class="approaches-grid">
+                    <div class="approach-card">
+                        <div class="approach-icon">📊</div>
+                        <h3>Count-based (por conteo)</h3>
+                        <p>Se basa en un <strong>número fijo de llamadas</strong>. El circuit breaker evalúa las últimas N llamadas. Si el porcentaje de fallos supera el umbral, se abre.</p>
+                        <code>failureRateThreshold: 50%<br>slidingWindowType: COUNT_BASED<br>slidingWindowSize: 10</code>
+                    </div>
+                    <div class="approach-card">
+                        <div class="approach-icon">⏱️</div>
+                        <h3>Time-based (por tiempo)</h3>
+                        <p>Se basa en una <strong>ventana de tiempo</strong>. Evalúa todas las llamadas realizadas en los últimos N segundos. Si el % de errores supera el umbral, se abre.</p>
+                        <code>failureRateThreshold: 50%<br>slidingWindowType: TIME_BASED<br>slidingWindowSize: 10 (seconds)</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 21: Ventajas -->
+        <section class="slide" id="slide-21">
+            <div class="slide-content">
+                <h2 class="slide-title">Ventajas del Circuit Breaker</h2>
+                <div class="advantages-list">
+                    <div class="advantage-item"><span class="adv-icon">🛡️</span><div><h4>Previene fallas en cascada</h4><p>Aísla el servicio problemático del resto del sistema</p></div></div>
+                    <div class="advantage-item"><span class="adv-icon">⚡</span><div><h4>Fail-fast</h4><p>Respuestas inmediatas en vez de timeouts largos</p></div></div>
+                    <div class="advantage-item"><span class="adv-icon">💾</span><div><h4>Libera recursos</h4><p>No mantiene threads ni conexiones bloqueadas</p></div></div>
+                    <div class="advantage-item"><span class="adv-icon">🔄</span><div><h4>Auto-recuperación</h4><p>Detecta automáticamente cuando el servicio se recupera</p></div></div>
+                    <div class="advantage-item"><span class="adv-icon">📊</span><div><h4>Monitoreo integrado</h4><p>Métricas de estado del circuito para dashboards y alertas</p></div></div>
+                    <div class="advantage-item"><span class="adv-icon">🎯</span><div><h4>Fallback patterns</h4><p>Respuestas alternativas para mantener funcionalidad</p></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 22: Limitaciones -->
+        <section class="slide" id="slide-22">
+            <div class="slide-content">
+                <h2 class="slide-title">Limitaciones del Circuit Breaker</h2>
+                <div class="limitations-list">
+                    <div class="limitation-item"><span class="lim-icon">⚙️</span><div><h4>Complejidad adicional</h4><p>Añade una capa más al código que hay que mantener y entender</p></div></div>
+                    <div class="limitation-item"><span class="lim-icon">🎛️</span><div><h4>Tuning delicado</h4><p>Configurar umbrales incorrectos puede causar más problemas que los que resuelve</p></div></div>
+                    <div class="limitation-item"><span class="lim-icon">🚨</span><div><h4>Falsos positivos</h4><p>Puede abrir el circuito por picos transitorios que no son un problema real</p></div></div>
+                    <div class="limitation-item"><span class="lim-icon">🔍</span><div><h4>No resuelve la causa raíz</h4><p>Solo mitiga el impacto; el fallo subyacente requiere otra solución</p></div></div>
+                    <div class="limitation-item"><span class="lim-icon">🧪</span><div><h4>Testing complejo</h4><p>Probar transiciones de estado y escenarios de borde requiere más esfuerzo</p></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 23: Implementaciones Comunes -->
+        <section class="slide" id="slide-23">
+            <div class="slide-content">
+                <h2 class="slide-title">Implementaciones Comunes</h2>
+                <div class="impl-grid">
+                    <div class="impl-card"><h3>☕</h3><p class="impl-name">Resilience4j</p><p>Java 8+ | Sucesor de Hystrix | Modular y ligero</p></div>
+                    <div class="impl-card"><h3>🐍</h3><p class="impl-name">pybreaker</p><p>Python | Simple y eficiente | Decoradores</p></div>
+                    <div class="impl-card"><h3>🟢</h3><p class="impl-name">opossum</p><p>Node.js | Robusto | Event-driven</p></div>
+                    <div class="impl-card"><h3>🔵</h3><p class="impl-name">Polly</p><p>.NET | Resiliencia completa | Políticas combinables</p></div>
+                    <div class="impl-card"><h3>🐹</h3><p class="impl-name">gobreaker</p><p>Go | Alto rendimiento | Concurrencia segura</p></div>
+                    <div class="impl-card retired"><h3>📦</h3><p class="impl-name">Hystrix (Retired)</p><p>Java | Netflix | Pionero del patrón | En mantenimiento</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 24: Ejemplo Python -->
+        <section class="slide" id="slide-24">
+            <div class="slide-content">
+                <h2 class="slide-title">Ejemplo Práctico: Python</h2>
+                <div class="code-slide">
+                    <pre class="code-block"><code><span class="keyword">import</span> pybreaker
+<span class="keyword">import</span> requests
+
+<span class="comment"># Configurar el Circuit Breaker</span>
+breaker = pybreaker.CircuitBreaker(
+    fail_max=<span class="number">5</span>,           <span class="comment"># Máximo de fallos antes de abrir</span>
+    reset_timeout=<span class="number">30</span>,      <span class="comment"># Segundos para pasar a half-open</span>
+    exclude=[ValueError]    <span class="comment"># Excepciones que NO cuentan como fallo</span>
+)
+
+<span class="decorator">@breaker</span>
+<span class="keyword">def</span> <span class="function">call_payment_service</span>(order_id):
+    <span class="string">"""Llama al servicio de pagos protegido por CB"""</span>
+    response = requests.post(
+        <span class="string">f"https://payments.api/process/{order_id}"</span>,
+        timeout=<span class="number">5</span>
+    )
+    response.raise_for_status()
+    <span class="keyword">return</span> response.json()
+
+<span class="comment"># Uso con fallback</span>
+<span class="keyword">try</span>:
+    result = call_payment_service(<span class="string">"ORD-12345"</span>)
+<span class="keyword">except</span> pybreaker.CircuitBreakerError:
+    <span class="comment"># Circuito abierto → fallback</span>
+    result = {<span class="string">"status"</span>: <span class="string">"queued"</span>, <span class="string">"msg"</span>: <span class="string">"Procesando más tarde"</span>}
+</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 25: Ejemplo Java -->
+        <section class="slide" id="slide-25">
+            <div class="slide-content">
+                <h2 class="slide-title">Ejemplo Práctico: Java</h2>
+                <div class="code-slide">
+                    <pre class="code-block"><code><span class="comment">// Configuración del CircuitBreaker con Resilience4j</span>
+CircuitBreakerConfig config = CircuitBreakerConfig.custom()
+    .failureRateThreshold(<span class="number">50</span>)              <span class="comment">// 50% de fallos abre el circuito</span>
+    .waitDurationInOpenState(Duration.ofSeconds(<span class="number">30</span>))
+    .slidingWindowSize(<span class="number">10</span>)                  <span class="comment">// Últimas 10 llamadas</span>
+    .permittedNumberOfCallsInHalfOpenState(<span class="number">3</span>)
+    .build();
+
+CircuitBreaker cb = CircuitBreaker.of(<span class="string">"paymentService"</span>, config);
+
+<span class="comment">// Decorar la función con Circuit Breaker</span>
+Supplier&lt;PaymentResponse&gt; decorated = CircuitBreaker
+    .decorateSupplier(cb, () -&gt; paymentService.process(order));
+
+<span class="comment">// Ejecutar con fallback</span>
+PaymentResponse result = Try.ofSupplier(decorated)
+    .recover(CallNotPermittedException.<span class="keyword">class</span>,
+        e -&gt; PaymentResponse.queued(<span class="string">"Servicio no disponible"</span>))
+    .recover(Exception.<span class="keyword">class</span>,
+        e -&gt; PaymentResponse.error(e.getMessage()))
+    .get();
+</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 26: Parámetros de configuración -->
+        <section class="slide" id="slide-26">
+            <div class="slide-content">
+                <h2 class="slide-title">Parámetros de Configuración</h2>
+                <div class="params-table">
+                    <div class="param-row header"><span>Parámetro</span><span>Descripción</span><span>Valor Típico</span></div>
+                    <div class="param-row"><span class="param-name">failureRateThreshold</span><span>% de fallos para abrir circuito</span><span class="param-value">50%</span></div>
+                    <div class="param-row"><span class="param-name">slidingWindowSize</span><span>Tamaño ventana de evaluación</span><span class="param-value">10-100</span></div>
+                    <div class="param-row"><span class="param-name">slidingWindowType</span><span>COUNT_BASED o TIME_BASED</span><span class="param-value">COUNT_BASED</span></div>
+                    <div class="param-row"><span class="param-name">waitDurationInOpenState</span><span>Tiempo en open antes de half-open</span><span class="param-value">30-60s</span></div>
+                    <div class="param-row"><span class="param-name">permittedCallsInHalfOpen</span><span>Llamadas de prueba en half-open</span><span class="param-value">3-10</span></div>
+                    <div class="param-row"><span class="param-name">slowCallDurationThreshold</span><span>Umbral para llamada lenta</span><span class="param-value">2-5s</span></div>
+                    <div class="param-row"><span class="param-name">slowCallRateThreshold</span><span>% de llamadas lentas para abrir</span><span class="param-value">80-100%</span></div>
+                    <div class="param-row"><span class="param-name">minimumNumberOfCalls</span><span>Mínimo de llamadas antes de evaluar</span><span class="param-value">10-20</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 27: Simulador + Cierre -->
+        <section class="slide" id="slide-27">
+            <div class="slide-content">
+                <h2 class="slide-title">🎮 Simulador Interactivo & ¡GRACIAS!</h2>
+                <div class="simulator">
+                    <div class="sim-controls">
+                        <div class="sim-config">
+                            <label>Umbral de fallos: <input type="range" id="threshold" min="1" max="10" value="3"><span id="thresholdVal">3</span></label>
+                            <label>Timeout (ms): <input type="range" id="timeout" min="1000" max="10000" value="5000" step="1000"><span id="timeoutVal">5000</span></label>
+                            <label>Prob. de fallo: <input type="range" id="failRate" min="0" max="100" value="60"><span id="failRateVal">60%</span></label>
+                        </div>
+                        <div class="sim-buttons">
+                            <button class="sim-btn" onclick="sendRequest()">📤 Enviar Request</button>
+                            <button class="sim-btn burst" onclick="sendBurst()">💥 Burst (10 requests)</button>
+                            <button class="sim-btn reset" onclick="resetSimulator()">🔄 Reset</button>
+                        </div>
+                    </div>
+                    <div class="sim-display">
+                        <div class="sim-status">
+                            <div class="status-indicator" id="simState">
+                                <div class="status-light closed"></div>
+                                <span>CLOSED</span>
+                            </div>
+                            <div class="sim-stats">
+                                <div class="stat"><span class="stat-label">Éxitos:</span><span class="stat-value" id="successCount">0</span></div>
+                                <div class="stat"><span class="stat-label">Fallos:</span><span class="stat-value" id="failCount">0</span></div>
+                                <div class="stat"><span class="stat-label">Rechazados:</span><span class="stat-value" id="rejectedCount">0</span></div>
+                            </div>
+                        </div>
+                        <div class="sim-log" id="simLog">
+                            <p class="log-entry info">Simulador listo. Configura y envía requests.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="closing-mini">
+                    <p class="closing-message">⚡ El Circuit Breaker: acepta que los fallos ocurrirán y prepárate para ellos. — <strong>Angel Duran & Daniel Felipe Melo</strong></p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
