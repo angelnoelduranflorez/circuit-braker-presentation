@@ -9,7 +9,9 @@
 </head>
 <body>
     <div class="progress-bar" id="progressBar"></div>
-    <div class="slide-counter" id="slideCounter">1 / 27</div>
+    <div class="slide-counter" id="slideCounter">
+        <input type="text" id="slideInput" value="1" onclick="this.select()" onkeydown="handleSlideInput(event)" /> / 27
+    </div>
     
     <nav class="nav-arrows">
         <button class="nav-btn" id="prevBtn" onclick="prevSlide()">&#10094;</button>

@@ -21,7 +21,7 @@ function showSlide(n) {
     
     // Update progress
     document.getElementById('progressBar').style.width = `${(n / totalSlides) * 100}%`;
-    document.getElementById('slideCounter').textContent = `${n} / ${totalSlides}`;
+    document.getElementById('slideInput').value = n;
     
     // Update nav buttons
     document.getElementById('prevBtn').style.opacity = n === 1 ? '0.3' : '1';
@@ -38,6 +38,9 @@ function prevSlide() {
 
 // Keyboard navigation
 document.addEventListener('keydown', (e) => {
+    // Don't navigate when typing in the slide input
+    if (e.target.id === 'slideInput') return;
+    
     if (e.key === 'ArrowRight' || e.key === ' ') {
         e.preventDefault();
         nextSlide();
@@ -55,6 +58,23 @@ document.addEventListener('keydown', (e) => {
         showSlide(totalSlides);
     }
 });
+
+// Slide input navigation
+function handleSlideInput(e) {
+    if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val) && val >= 1 && val <= totalSlides) {
+            showSlide(val);
+        } else {
+            e.target.value = currentSlide;
+        }
+        e.target.blur();
+    }
+    if (e.key === 'Escape') {
+        e.target.value = currentSlide;
+        e.target.blur();
+    }
+}
 
 // Touch support
 let touchStartX = 0;
